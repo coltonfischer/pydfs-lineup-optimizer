@@ -38,9 +38,9 @@ def get_positions_for_optimizer(
     Convert positions list into dict for using in optimizer.
     """
     positions = {}
-    positions_counter = Counter([tuple(sorted(p.positions)) for p in positions_list])
-    for key in positions_counter.keys():
-        min_value = positions_counter[key] + len(list(filter(
+    positions_counter = Counter(p.positions for p in positions_list)
+    for key, total in positions_counter.items():
+        min_value = total + len(list(filter(
             lambda p: len(p.positions) < len(key) and list_intersection(key, p.positions), positions_list
         )))
         positions[key] = min_value
@@ -55,8 +55,8 @@ def get_positions_for_optimizer(
     #  Create list of required combinations for consistency of multi-positions
     possible_combinations = set()
     for multi_positions in multi_positions_combinations:
-        possible_combinations.add(tuple(chain.from_iterable(min_positions.get(pos, pos) for pos in multi_positions)))
-    for i in range(2, len(possible_combinations)):
+        possible_combinations.add(tuple(chain.from_iterable(min_positions.get(pos, (pos, )) for pos in multi_positions)))
+    for i in range(2, len(possible_combinations) + 1):
         total_combinations = len(possible_combinations)
         for combo in combinations(possible_combinations, i):
             flatten_positions = tuple(sorted(set(chain.from_iterable(combo))))
@@ -76,13 +76,13 @@ def get_positions_for_optimizer(
 
 
 def link_players_with_positions(
-        players: List['Player'],
+        players: Iterable['Player'],
         positions: List[LineupPosition]
 ) -> Dict['Player', LineupPosition]:
     """
     This method tries to set positions for given players, and raise error if can't.
     """
-    positions = positions[:]
+    positions = positions.copy()
     players_with_positions = {}  # type: Dict['Player', LineupPosition]
     players = sorted(players, key=get_player_priority)
     for position in positions:
@@ -112,15 +112,21 @@ def link_players_with_positions(
 
 def get_remaining_positions(
         positions: List[LineupPosition],
-        unswappable_players: List['LineupPlayer']
+        unswappable_players: Optional[List['LineupPlayer']] = None,
+        locked_positions: Optional[List['LineupPosition']] = None,
 ) -> List[LineupPosition]:
     """
-    Remove unswappable players positions from positions list
+    Remove locked and unswappable players positions from positions list
     """
     positions = positions[:]
-    for player in unswappable_players:
+    for player in unswappable_players or []:
         for position in positions:
             if position.name == player.lineup_position:
+                positions.remove(position)
+                break
+    for locked_position in locked_positions or []:
+        for position in positions:
+            if position.name == locked_position.name:
                 positions.remove(position)
                 break
     return positions

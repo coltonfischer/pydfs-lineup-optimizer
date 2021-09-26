@@ -9,7 +9,7 @@ pydfs-lineup-optimizer
 ======================
 
 **pydfs-lineup-optimizer** is a tool for creating optimal lineups for daily fantasy sport.
-Currently it supports following dfs sites:
+Currently it supports the following dfs sites:
 
 +--------+------------+---------+--------------+-------+---------+-------------------------+---------------------+------------------+
 | League | DraftKings | FanDuel | FantasyDraft | Yahoo | FanBall | DraftKings Captain Mode | FanDuel Single Game | DraftKings Tiers |
@@ -29,6 +29,8 @@ Currently it supports following dfs sites:
 | Soccer | \+         | \-      | \-           | \+    | \-      | \+                      | \-                  | \-               |
 +--------+------------+---------+--------------+-------+---------+-------------------------+---------------------+------------------+
 | CFL    | \+         | \-      | \-           | \-    | \-      | \-                      | \-                  | \-               |
++--------+------------+---------+--------------+-------+---------+-------------------------+---------------------+------------------+
+| CFB    | \+         | \-      | \-           | \-    | \-      | \-                      | \-                  | \-               |
 +--------+------------+---------+--------------+-------+---------+-------------------------+---------------------+------------------+
 | LOL    | \-         | \+      | \-           | \-    | \-      | \+                      | \+                  | \-               |
 +--------+------------+---------+--------------+-------+---------+-------------------------+---------------------+------------------+
@@ -51,3 +53,4 @@ Contents
    usage
    rules
    performance-and-optimization
+   custom-settings
