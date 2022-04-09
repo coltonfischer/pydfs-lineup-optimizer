@@ -191,7 +191,7 @@ class TeamStack(BaseStack):
                     min_from_group=self.size,
                     parent=parent_group,
                 ))
-        stacks = [OptimizerStack(groups=groups)]
+        stacks = [OptimizerStack(groups=groups, can_intersect=False)]
         if spacing_groups:
             stacks.append(OptimizerStack(groups=spacing_groups, can_intersect=True))
         return stacks
